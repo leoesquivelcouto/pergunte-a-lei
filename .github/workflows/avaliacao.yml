@@ -1,0 +1,45 @@
+# Monta o índice com os modelos reais e mede a busca no conjunto de perguntas.
+# Roda na nuvem (é pesado: baixa ~3,5 GB de modelos) a cada mudança na busca ou nas perguntas.
+name: Avaliação
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["src/lei/**", "avaliacao/**", "dados/brutos/**"]
+
+jobs:
+  avaliar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: lei
+          POSTGRES_PASSWORD: lei
+          POSTGRES_DB: lei
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U lei" --health-interval 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://lei:lei@localhost:5432/lei
+      FASTEMBED_CACHE_PATH: /home/runner/.cache/fastembed
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/fastembed
+          key: modelos-v1
+      - run: pip install .
+      - run: lei ingerir
+      - run: python avaliacao/comparar_modelos.py
+      - run: cat avaliacao/resultados.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resultados
+          path: avaliacao/resultados.md

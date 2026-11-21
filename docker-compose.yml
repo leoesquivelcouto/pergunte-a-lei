@@ -1,0 +1,33 @@
+# Sobe tudo com: docker compose up --build
+# Página em http://localhost:8000 (a primeira subida baixa as leis e o modelo, ~250 MB)
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: lei
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lei-local}
+      POSTGRES_DB: lei
+    volumes:
+      - dados-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lei -d lei"]
+      interval: 3s
+      retries: 20
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://lei:${POSTGRES_PASSWORD:-lei-local}@db:5432/lei
+      # Opcional: com a chave, as respostas são escritas pelo Claude; sem ela, modo extrativo.
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    volumes:
+      - modelos:/home/lei/modelos
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  dados-pg:
+  modelos:
