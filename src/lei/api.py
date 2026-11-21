@@ -11,12 +11,12 @@ from pydantic import BaseModel, Field
 
 from lei import __version__
 from lei.busca import Indice
-from lei.config import database_url
+from lei.config import database_url, limiar_do_modelo
 from lei.fontes import LEIS
 from lei.resposta import responder, rotulo
 
-# Calibrado em avaliacao/ (ver README): abaixo disso, nenhum artigo trata do assunto.
-LIMIAR = float(os.environ.get("LIMIAR_SIMILARIDADE", "0.32"))
+# Sem LIMIAR_SIMILARIDADE, usa o limiar calibrado para o modelo indexado (ver config.LIMIARES).
+LIMIAR = float(os.environ["LIMIAR_SIMILARIDADE"]) if os.environ.get("LIMIAR_SIMILARIDADE") else None
 
 estado: dict[str, Indice] = {}
 
@@ -54,8 +54,9 @@ class RespostaSaida(BaseModel):
 
 @app.post("/perguntar", response_model=RespostaSaida)
 def perguntar(dados: PerguntaEntrada) -> RespostaSaida:
-    resultados = estado["indice"].buscar(dados.pergunta, k=5)
-    r = responder(dados.pergunta, resultados, LIMIAR)
+    indice = estado["indice"]
+    resultados = indice.buscar(dados.pergunta, k=5)
+    r = responder(dados.pergunta, resultados, LIMIAR if LIMIAR is not None else limiar_do_modelo(indice.modelo))
     return RespostaSaida(
         respondida=r.respondida,
         resposta=r.texto,

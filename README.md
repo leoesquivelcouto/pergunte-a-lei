@@ -43,7 +43,34 @@ divórcio, férias de CLT...), que devem ser recusadas.
 - **decisão responder/recusar:** quantas das 48 perguntas ficam do lado certo do limiar de similaridade.
 
 O workflow [Avaliação](.github/workflows/avaliacao.yml) monta o índice e mede três modelos de embedding em
-cada mudança da busca. O resultado completo fica em [avaliacao/resultados.md](avaliacao/resultados.md).
+cada mudança da busca. O resultado completo, com cada pergunta errada, fica em
+[avaliacao/resultados.md](avaliacao/resultados.md).
+
+| Modelo de embedding | Modo | acerto@1 | acerto@3 | acerto@5 | MRR | responder/recusar | tempo |
+|---|---|---|---|---|---|---|---|
+| — | só palavras | 0,36 | 0,64 | 0,81 | 0,53 | 42/48 | 28 ms |
+| MiniLM-L12 (220 MB) | só vetorial | 0,36 | 0,55 | 0,71 | 0,48 | 43/48 | 5 ms |
+| MiniLM-L12 (220 MB) | **híbrida** | 0,62 | 0,88 | 0,93 | 0,75 | 42/48 | 7 ms |
+| mpnet-base (1 GB) | híbrida | 0,57 | 0,83 | 0,88 | 0,69 | 45/48 | 23 ms |
+| e5-large (2,2 GB) | só vetorial | **0,76** | **0,93** | **0,98** | **0,85** | **46/48** | 100 ms |
+| e5-large (2,2 GB) | híbrida | 0,76 | 0,90 | 0,95 | 0,84 | 46/48 | 105 ms |
+
+O que os números mostram:
+
+- **Com modelo pequeno, a busca híbrida é decisiva**: palavras (MRR 0,53) e vetores (0,48) erram coisas
+  diferentes, e juntos chegam a 0,75.
+- **Modelo maior nem sempre é melhor**: o mpnet, 4 vezes maior, ficou abaixo do MiniLM.
+- **Com o e5-large, a busca por palavras deixa de ajudar**: o modelo sozinho já acerta o artigo em 1º lugar
+  em 76% das perguntas e o encontra entre os 5 primeiros em 98%. O custo é 10 vezes mais disco e 15 vezes
+  mais tempo por pergunta (ainda 0,1 s).
+- **Recusa:** com o e5-large, 46 das 48 perguntas ficam do lado certo do limiar. Cada modelo tem uma escala
+  de similaridade própria, então o limiar é calibrado por modelo (`config.LIMIARES`).
+
+O padrão do projeto é o **MiniLM com busca híbrida**, que roda em qualquer máquina. Onde houver memória
+(cerca de 3 GB livres), `MODELO_EMBEDDING=intfloat/multilingual-e5-large` é a melhor escolha.
+
+Exemplos de erro que sobram: "nome sujo no cadastro de inadimplentes" (a lei diz "cadastros e dados de
+consumo") e "quem é consumidor" (o art. 2º do CDC perde para artigos que repetem a palavra "consumidor").
 
 ## Decisões
 

@@ -24,10 +24,13 @@ def ingerir(args: argparse.Namespace) -> None:
 def perguntar(args: argparse.Namespace) -> None:
     from lei.api import LIMIAR
     from lei.busca import Indice
+    from lei.config import limiar_do_modelo
     from lei.resposta import responder, rotulo
 
     with _conectar() as con:
-        r = responder(args.pergunta, Indice(con).buscar(args.pergunta), LIMIAR)
+        indice = Indice(con)
+        limiar = LIMIAR if LIMIAR is not None else limiar_do_modelo(indice.modelo)
+        r = responder(args.pergunta, indice.buscar(args.pergunta), limiar)
     print(r.texto)
     for c in r.citacoes:
         print(f"\n[{rotulo(c)}]\n{c.texto}")
