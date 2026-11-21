@@ -51,7 +51,7 @@ def main() -> None:
                 )
                 if modo == "hibrida":
                     erros[nome] = m.erros
-            print(linhas[-1], flush=True)
+                print(linhas[-1], flush=True)
 
     linhas += ["", "## Onde a busca híbrida errou o 1º lugar", ""]
     for nome, lista in erros.items():

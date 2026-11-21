@@ -30,7 +30,8 @@ def normalizar(m: np.ndarray) -> np.ndarray:
 
 def documentos(textos: list[str], modelo: str = MODELO_EMBEDDING) -> np.ndarray:
     prefixo = _prefixos(modelo)[1]
-    vetores = np.array(list(_modelo(modelo).embed([prefixo + t for t in textos])), dtype=np.float32)
+    # Lotes pequenos: com o lote padrão (256 textos longos), o modelo grande (e5-large) estourou a memória.
+    vetores = np.array(list(_modelo(modelo).embed([prefixo + t for t in textos], batch_size=16)), dtype=np.float32)
     return normalizar(vetores)
 
 
