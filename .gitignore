@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.pytest_cache/
+.ruff_cache/
+# O texto das leis fica versionado (dados/brutos) para a avaliação ser reproduzível.
+/dados/*
+!/dados/brutos/
+dist/
+*.egg-info/

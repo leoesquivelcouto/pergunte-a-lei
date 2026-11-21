@@ -1,0 +1,44 @@
+[project]
+name = "pergunte-a-lei"
+version = "0.1.0"
+description = "Respostas sobre a Lei do Estágio, a LGPD e o CDC, sempre citando o artigo, com avaliação medida."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+authors = [{ name = "Leonardo Esquivel Couto" }]
+dependencies = [
+    "fastembed>=0.7",
+    "numpy>=2.0",
+    "psycopg[binary]>=3.2",
+    "httpx>=0.27",
+    "truststore>=0.10",
+    "beautifulsoup4>=4.12",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "anthropic>=2.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+lei = "lei.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lei"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
