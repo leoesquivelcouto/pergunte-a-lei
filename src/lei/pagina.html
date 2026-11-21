@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pergunte à Lei</title>
+  <style>
+    :root { --fundo: #f7f5f0; --papel: #fff; --tinta: #1d1d1b; --suave: #5f5e5a; --linha: #dedbd2; --destaque: #1f5c4a; --aviso: #8a5a00; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fundo: #161614; --papel: #1f1f1c; --tinta: #ecebe6; --suave: #a8a69e; --linha: #34332e; --destaque: #7cc4a8; --aviso: #e0b25c; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--fundo); color: var(--tinta); font: 16px/1.55 system-ui, sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+    h1 { font-size: 28px; margin: 0 0 4px; }
+    .sub { color: var(--suave); margin: 0 0 24px; }
+    form { display: flex; gap: 8px; }
+    input { flex: 1; min-width: 0; padding: 12px 14px; font: inherit; border: 1px solid var(--linha); border-radius: 8px; background: var(--papel); color: var(--tinta); }
+    button { padding: 12px 18px; font: inherit; font-weight: 600; border: 0; border-radius: 8px; background: var(--destaque); color: var(--fundo); cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; }
+    .exemplos { margin: 12px 0 28px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .exemplos button { background: transparent; color: var(--destaque); border: 1px solid var(--linha); font-weight: 400; padding: 6px 12px; font-size: 14px; }
+    .resposta { background: var(--papel); border: 1px solid var(--linha); border-radius: 10px; padding: 20px; }
+    .resposta p { margin: 0 0 12px; }
+    .recusa { border-left: 4px solid var(--aviso); }
+    details { border-top: 1px solid var(--linha); padding: 10px 0; }
+    summary { cursor: pointer; font-weight: 600; color: var(--destaque); }
+    .artigo { white-space: pre-line; font-size: 14px; color: var(--suave); margin: 8px 0 0; }
+    .aviso { font-size: 13px; color: var(--suave); margin-top: 14px; }
+    .modo { font-size: 12px; color: var(--suave); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Pergunte à Lei</h1>
+  <p class="sub">Dúvidas sobre a Lei do Estágio, a LGPD e o Código de Defesa do Consumidor, com o artigo citado.</p>
+  <form id="f">
+    <input id="q" placeholder="Ex.: estagiário tem direito a férias?" maxlength="300" required aria-label="Pergunta">
+    <button id="b">Perguntar</button>
+  </form>
+  <div class="exemplos" id="ex"></div>
+  <div id="r" aria-live="polite"></div>
+</main>
+<script>
+  const exemplos = ["Estagiário tem direito a férias?", "Posso pedir para apagarem meus dados?",
+                    "Qual o prazo para desistir de compra pela internet?", "Qual a pena para homicídio?"];
+  const ex = document.getElementById("ex"), f = document.getElementById("f"),
+        q = document.getElementById("q"), b = document.getElementById("b"), r = document.getElementById("r");
+  for (const e of exemplos) {
+    const x = document.createElement("button"); x.type = "button"; x.textContent = e;
+    x.onclick = () => { q.value = e; f.requestSubmit(); }; ex.appendChild(x);
+  }
+  const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt) n.textContent = txt; return n; };
+  f.onsubmit = async (ev) => {
+    ev.preventDefault(); b.disabled = true; r.replaceChildren(el("p", "modo", "Procurando nos artigos..."));
+    try {
+      const res = await fetch("perguntar", { method: "POST", headers: { "Content-Type": "application/json" },
+                                              body: JSON.stringify({ pergunta: q.value }) });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.detail?.[0]?.msg || "Erro na consulta");
+      const card = el("div", "resposta" + (d.respondida ? "" : " recusa"));
+      card.appendChild(el("p", "", d.resposta));
+      for (const c of d.citacoes) {
+        const det = el("details"); det.appendChild(el("summary", "", c.rotulo));
+        det.appendChild(el("p", "artigo", c.texto));
+        const a = el("a", "", "Texto oficial no Planalto"); a.href = c.link; a.target = "_blank"; a.rel = "noopener";
+        det.appendChild(a); card.appendChild(det);
+      }
+      card.appendChild(el("p", "aviso", d.aviso));
+      card.appendChild(el("p", "modo", d.modo === "llm" ? "Resposta escrita pelo Claude a partir dos artigos." : "Modo extrativo: artigos mais relevantes, sem texto gerado."));
+      r.replaceChildren(card);
+    } catch (e) { r.replaceChildren(el("p", "resposta recusa", e.message)); }
+    finally { b.disabled = false; }
+  };
+</script>
+</body>
+</html>
