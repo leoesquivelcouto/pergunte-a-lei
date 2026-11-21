@@ -1,0 +1,48 @@
+{"id": 1, "pergunta": "Quantas horas por dia um estagiário de faculdade pode trabalhar?", "esperado": [["estagio", "10"]]}
+{"id": 2, "pergunta": "Estagiário tem direito a férias?", "esperado": [["estagio", "13"]]}
+{"id": 3, "pergunta": "Posso ficar mais de dois anos estagiando na mesma empresa?", "esperado": [["estagio", "11"]]}
+{"id": 4, "pergunta": "A empresa é obrigada a pagar bolsa para o estagiário?", "esperado": [["estagio", "12"]]}
+{"id": 5, "pergunta": "Estagiário tem direito a vale-transporte?", "esperado": [["estagio", "12"]]}
+{"id": 6, "pergunta": "Estágio gera vínculo de emprego com a empresa?", "esperado": [["estagio", "3"], ["estagio", "15"]]}
+{"id": 7, "pergunta": "Quem assina o termo de compromisso de estágio?", "esperado": [["estagio", "3"], ["estagio", "7"], ["estagio", "16"]]}
+{"id": 8, "pergunta": "Existe um limite de estagiários que uma empresa pode contratar?", "esperado": [["estagio", "17"]]}
+{"id": 9, "pergunta": "Na semana de provas o estagiário pode trabalhar menos horas?", "esperado": [["estagio", "10"]]}
+{"id": 10, "pergunta": "A empresa precisa fazer seguro contra acidentes para o estagiário?", "esperado": [["estagio", "9"]]}
+{"id": 11, "pergunta": "Qual a diferença entre estágio obrigatório e não obrigatório?", "esperado": [["estagio", "2"]]}
+{"id": 12, "pergunta": "Um advogado autônomo pode ter estagiário?", "esperado": [["estagio", "9"]]}
+{"id": 13, "pergunta": "Quantos estagiários um mesmo supervisor pode acompanhar?", "esperado": [["estagio", "9"]]}
+{"id": 14, "pergunta": "Existe reserva de vagas de estágio para pessoas com deficiência?", "esperado": [["estagio", "17"]]}
+{"id": 15, "pergunta": "O que a LGPD considera dado pessoal sensível?", "esperado": [["lgpd", "5"]]}
+{"id": 16, "pergunta": "Em que casos uma empresa pode usar meus dados sem eu autorizar?", "esperado": [["lgpd", "7"], ["lgpd", "11"]]}
+{"id": 17, "pergunta": "Posso pedir para uma empresa apagar os meus dados pessoais?", "esperado": [["lgpd", "18"], ["lgpd", "16"]]}
+{"id": 18, "pergunta": "Quais direitos eu tenho sobre os meus dados pessoais?", "esperado": [["lgpd", "18"], ["lgpd", "17"]]}
+{"id": 19, "pergunta": "Qual o valor máximo da multa para quem descumpre a LGPD?", "esperado": [["lgpd", "52"]]}
+{"id": 20, "pergunta": "O que faz o encarregado de dados, o DPO?", "esperado": [["lgpd", "41"], ["lgpd", "5"]]}
+{"id": 21, "pergunta": "A empresa tem que avisar quando acontece um vazamento de dados?", "esperado": [["lgpd", "48"]]}
+{"id": 22, "pergunta": "Que cuidados a lei exige no tratamento de dados de crianças?", "esperado": [["lgpd", "14"]]}
+{"id": 23, "pergunta": "A LGPD se aplica a dados usados só em reportagens jornalísticas?", "esperado": [["lgpd", "4"]]}
+{"id": 24, "pergunta": "Posso retirar o consentimento que dei para uso dos meus dados?", "esperado": [["lgpd", "8"], ["lgpd", "18"]]}
+{"id": 25, "pergunta": "Quais são os princípios da LGPD, como finalidade e necessidade?", "esperado": [["lgpd", "6"]]}
+{"id": 26, "pergunta": "Quando a empresa deve parar de usar os meus dados?", "esperado": [["lgpd", "15"], ["lgpd", "16"]]}
+{"id": 27, "pergunta": "Um plano de saúde pode usar meus dados de saúde para recusar cliente?", "esperado": [["lgpd", "11"]]}
+{"id": 28, "pergunta": "Meus dados podem ser enviados para empresas em outro país?", "esperado": [["lgpd", "33"]]}
+{"id": 29, "pergunta": "Qual o prazo para desistir de uma compra feita pela internet?", "esperado": [["cdc", "49"]]}
+{"id": 30, "pergunta": "Quanto tempo tenho para reclamar de um defeito num eletrodoméstico?", "esperado": [["cdc", "26"]]}
+{"id": 31, "pergunta": "Em quanto tempo a loja tem que consertar um produto com defeito?", "esperado": [["cdc", "18"]]}
+{"id": 32, "pergunta": "Fui cobrado indevidamente: tenho direito a receber o dobro?", "esperado": [["cdc", "42"]]}
+{"id": 33, "pergunta": "O que é propaganda enganosa?", "esperado": [["cdc", "37"]]}
+{"id": 34, "pergunta": "A loja pode me obrigar a comprar um produto para levar outro (venda casada)?", "esperado": [["cdc", "39"]]}
+{"id": 35, "pergunta": "Quais são os direitos básicos do consumidor?", "esperado": [["cdc", "6"]]}
+{"id": 36, "pergunta": "O fabricante responde pelo defeito do produto mesmo sem ter culpa?", "esperado": [["cdc", "12"]]}
+{"id": 37, "pergunta": "Uma cláusula abusiva no contrato vale?", "esperado": [["cdc", "51"]]}
+{"id": 38, "pergunta": "Se eu pagar o financiamento antes do prazo, tenho desconto nos juros?", "esperado": [["cdc", "52"]]}
+{"id": 39, "pergunta": "A empresa pode me constranger ou ameaçar para cobrar uma dívida?", "esperado": [["cdc", "42"], ["cdc", "71"]]}
+{"id": 40, "pergunta": "Por quanto tempo meu nome pode ficar sujo no cadastro de inadimplentes?", "esperado": [["cdc", "43"]]}
+{"id": 41, "pergunta": "Quem a lei considera consumidor?", "esperado": [["cdc", "2"]]}
+{"id": 42, "pergunta": "Qual o prazo para pedir indenização por um acidente causado por produto defeituoso?", "esperado": [["cdc", "27"]]}
+{"id": 43, "pergunta": "Qual é a pena para homicídio culposo?", "esperado": []}
+{"id": 44, "pergunta": "Como funciona o divórcio consensual em cartório?", "esperado": []}
+{"id": 45, "pergunta": "Quantos dias de férias tem um empregado com carteira assinada?", "esperado": []}
+{"id": 46, "pergunta": "Qual o prazo para entregar a declaração do imposto de renda?", "esperado": []}
+{"id": 47, "pergunta": "Posso dirigir com a carteira de motorista vencida?", "esperado": []}
+{"id": 48, "pergunta": "Qual a idade mínima para votar?", "esperado": []}
